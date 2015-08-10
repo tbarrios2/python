@@ -1,0 +1,10 @@
+gasperday=40
+print(gasperday)
+fareperday=148
+daysperweek=7
+paynetofgasperweek = daysperweek*(fareperday-gasperday)
+print(paynetofgasperweek)
+paynetofgasperyear = paynetofgasperweek*52
+print(paynetofgasperyear)
+aftertaxincome=.6*paynetofgasperyear
+print(aftertaxincome)
