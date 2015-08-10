@@ -1,0 +1,210 @@
+fred = "Why do gorillas have bif nostrils? Big fingers!!"
+print(fred)
+print("\n")
+fred2 = 'What is pink and fluffy? Pink fluff!!'
+print(fred2)
+print("\n")
+fred3 = "How do dinosaurs pay their bills?"
+print(fred3)
+print("\n")
+fred4 = '''How do dinosaurs pay their bills?
+With tyrannosaurus checks!'''
+print(fred4)
+print("\n")
+
+single_quote_str = 'He said, "Aren\'t can\'t shouldn\'t wouldn\'t."'
+print(single_quote_str)
+print("\n")
+
+double_quote_str = "He said, \"Aren't can't shouldn't wouldn't.\""
+print(double_quote_str)
+print("\n")
+
+# embedding values in strings
+
+wklygross = 1000
+
+message = 'I make %s before taxes and gas each week driving for Uber.'
+
+print(message % wklygross)
+print("\n")
+
+joke_text = '%s: a device for finding furniture in the dark.'
+bodypart1 = 'Knee'
+bodypart2 = 'Shin'
+print(joke_text % bodypart1)
+print("\n")
+print(joke_text % bodypart2)
+print("\n")
+
+nums = 'What did the number %s say to the number %s? Nice belt!'
+print(nums % (0,8))
+print("\n")
+
+print(10*'a')
+
+spaces = ' ' * 25
+print('%s 514 1/2 Brett St.' % spaces)
+print('%s Inglewood, CA' % spaces)
+print()
+print()
+print('Dear Sir,')
+print()
+print('I wish to report the tiles are missing from the')
+print('outside toilet roof.')
+print('I think it was bad wind the other night that blew them away.')
+print()
+print('Regards')
+print('Thomas Barrios')
+
+print()
+print(1000*'Snirt')
+print()
+shopping_list = 'oastmeal, strawberries, blueberries, Greek yogurt, cottage cheese'
+print(shopping_list)
+
+shopping_list = ['oastmeal', 'strawberries', 'blueberries', 'Greek yogurt', 'cottage cheese']
+print(shopping_list)
+print(shopping_list[2])
+shopping_list[0] = 'Oatmeal'
+print(shopping_list)
+print(shopping_list[1:3])
+
+some_numbers = [1, 2, 5, 10, 20]
+
+some_strings = ['Which', 'Witch', 'Weather' ,'Whether', 'Here', 'Hear']
+
+numbers_and_strings = [ 'Why', 'was', 6, 'afraid', 'of', 7, 'because', 7,8,9]
+print(numbers_and_strings)
+
+numbers = [1,2,3,4]
+strings = ['I', 'kicked', 'my', 'toe', 'and', 'it' , 'is', 'sore']
+mylist = [numbers, strings]
+print(mylist)
+
+shopping_list.append('baby spinach')
+shopping_list.append('arugula')
+shopping_list.append('chicken breast')
+print(shopping_list)
+del shopping_list[1]
+print(shopping_list)
+
+list1 = [1,2,3,4]
+list2 = ['I', 'tripped', 'and', 'hit', 'the', 'floor.']
+print(list1+list2)
+list3=list1+list2
+print(list3)
+print(list1*5)
+
+#tuples
+print()
+fibs = (0,1,1,2,3,5)
+print(fibs[3])
+#Tuples cannot change once they are created.
+
+#maps
+favorite_sports = {'Ralph Williams' : 'Football',
+                   'Michael Tippett' : 'Basketball',
+                   'Edward Elgar' : 'Baseball',
+                   'Rebecca Clarke' : 'Netball',
+                   'Ethel Smyth' : 'Badmiton',
+                   'Frank Bridge' : 'Rugby'}
+print(favorite_sports['Rebecca Clarke'])
+
+print(favorite_sports)
+del favorite_sports['Ethel Smyth']
+print()
+print(favorite_sports)
+
+favorite_sports['Ralph Williams'] = 'Ice Hockey'
+print()
+print(favorite_sports)
+
+#graphics turtle
+
+import turtle
+t = turtle.Pen()
+
+t.forward(50)
+t.left(90)
+t.forward(50)
+t.left(90)
+t.forward(50)
+t.left(90)
+t.forward(50)
+t.left(90)
+
+t.clear()
+t.reset()
+
+t.backward(100)
+t.up()
+t.right(90)
+t.forward(20)
+t.left(90)
+t.down()
+t.forward(100)
+
+# rectangle
+t.clear()
+t.reset()
+
+t.forward(50)
+t.left(90)
+t.forward(100)
+t.left(90)
+t.forward(50)
+t.left(90)
+t.forward(100)
+t.left(90)
+
+# triangle
+t.clear()
+t.reset()
+
+t.forward(100)
+t.left(120)
+t.forward(100)
+t.left(120)
+t.forward(100)
+t.left(120)
+
+# box w/out corners
+t.clear()
+t.reset()
+
+t.forward(50)
+
+t.up()
+t.forward(10)
+t.down()
+t.left(90)
+t.up()
+t.forward(10)
+t.down()
+t.forward(100)
+
+t.up()
+t.forward(10)
+t.down()
+t.left(90)
+t.up()
+t.forward(10)
+t.down()
+t.forward(50)
+
+t.up()
+t.forward(10)
+t.down()
+t.left(90)
+t.up()
+t.forward(10)
+t.down()
+t.forward(100)
+
+t.up()
+t.forward(10)
+t.down()
+t.left(90)
+
+
