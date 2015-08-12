@@ -232,3 +232,62 @@ elif age == 13:
 else:
     print("Huh?")
     
+
+age = '10'
+print()
+converted_age = int(age)
+if converted_age == 10:
+    print("What's the best way to speak to a monster?")
+    print("From as far away at possible.")
+
+age = '10.5'
+converted_age = float(age)
+print(converted_age)
+
+# loops
+for x in range(0,5):
+    print("hello")
+
+print(list(range(10,21)))
+for x in range(0,5):
+    print('hello %s' % x)
+
+for i in shopping_list:
+    print(i)
+    for j in shopping_list:
+       print(j)
+       
+
+found_coins = 20
+magic_coins = 70
+stolen_coins = 3
+coins = found_coins
+for week in range(1,53):
+    coins = coins + magic_coins - stolen_coins
+    print('Week %s = %s' % (week, coins))
+    
+          
+for step in range(0,20):
+    print(step)
+
+#step = 0
+#while step < 10000:
+#    print(step)
+#    if tired == True:
+#        break
+#    elif badweather == True:
+#        break
+#    else:
+#        step = step + 1
+
+x = 45
+y = 80
+while x < 50 and y < 100:
+    x = x + 1
+    y = y + 1
+    print(x,y)
+    
+        
+
+
+
