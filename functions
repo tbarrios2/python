@@ -1,0 +1,12 @@
+def testfunc(myname):
+    print('hello %s' % myname)
+# note argument is string so must be surrounded in quotes
+
+
+def testfunc(fname, lname):
+    print('hello %s %s' % (fname,lname))
+
+firstname = 'thomas'
+lastname = 'barrios'
+
+testfunc(firstname, lastname)
