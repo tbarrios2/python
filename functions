@@ -10,3 +10,39 @@ firstname = 'thomas'
 lastname = 'barrios'
 
 testfunc(firstname, lastname)
+
+def savings(pocket_money, paper_route, spending):
+    return pocket_money + paper_route - spending
+print(savings(10,10,5))
+
+def variable_test():
+    first_variable = 10
+    second_variable = 20
+    return first_variable * second_variable
+
+print(variable_test())
+
+another_variable = 100
+def variable_test2():
+    first_variable = 10
+    second_variable = 20
+    return first_variable * second_variable * another_variable
+print(variable_test2())
+
+def spaceship_building(cans):
+    total_cans = 0
+    for week in range(1,53):
+        total_cans = total_cans + cans
+        print('week %s = %s cans' % (week, total_cans))
+        
+spaceship_building(2)
+spaceship_building(13)
+
+import time
+print(time.asctime())
+
+import sys
+
+if age >= 10 and age <= 13:
+    print('What is 13 + 49 + 84 + 155 + 97? A headache!')
+
