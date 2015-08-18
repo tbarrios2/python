@@ -45,4 +45,48 @@ import sys
 
 if age >= 10 and age <= 13:
     print('What is 13 + 49 + 84 + 155 + 97? A headache!')
+else:
+    print('Huh?')
+
+class Things:
+    pass
+class Inanimate(Things):
+    pass
+class Animate(Things):
+    pass
+class Animals(Animate):
+    def breathe(self):
+        print('breathing')
+    def move(self):
+        print('moving')
+    def eat_food(self):
+        print('eating food')
+class Mammals(Animals):
+    def feed_young_with_milk(self):
+        pass
+class Giraffes(Mammals):
+    def eat_leaves_from_trees(self):
+        pass
+class Sidewalks(Inanimate):
+    pass
+#adding object to class
+reginald = Giraffes()
+reginald.move()
+reginald.eat_leaves_from_trees()
+harold = Giraffes()
+harold.move()
+
+
+#defining functions of classes
+def this_is_a_normal_function():
+    print('I am a normal function')
+class ThisIsMySillyClass:
+    def this_is_a_class_function():
+        print('I am a class function')
+    def this_is_also_a_class_function():
+        print('I am also a class function')
+        
+        
+    
+
 
