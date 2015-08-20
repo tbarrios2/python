@@ -89,4 +89,52 @@ class ThisIsMySillyClass:
         
     
 
+      
+import turtle
+avery = turtle.Pen()
+kate = turtle.Pen()
+avery.forward(50)
+avery.right(90)
+avery.forward(20)
+kate.left(90)
+kate.forward(100)
+jacob = turtle.Pen()
+jacob.left(180)
+jacob.forward(80)
+
+#2 turtle pitchfork
+turtle.clearscreen()
+turtle.reset()
+
+avery = turtle.Pen()
+kate = turtle.Pen()
+avery2 = turtle.Pen()
+kate2 = turtle.Pen()
+
+#inside fork
+avery.forward(50)
+avery2.forward(50)
+avery.left(90)
+avery2.right(90)
+avery.forward(30)
+avery2.forward(30)
+avery.right(90)
+avery2.left(90)
+avery.forward(30)
+avery2.forward(30)
+
+#outside fork
+kate.forward(40)
+kate2.forward(40)
+kate.left(90)
+kate2.right(90)
+kate.forward(40)
+kate2.forward(40)
+kate2.left(90)
+kate.right(90)
+kate.forward(50)
+kate2.forward(50)
+
+
+
 
