@@ -136,5 +136,73 @@ kate.forward(50)
 kate2.forward(50)
 
 
+turtle.clearscreen()
+
+print(abs(10))
+print(abs(-10))
+
+steps = -3
+if abs(steps) > 0:
+    print('Character is moving')
+
+steps = -3
+if steps > 0 or steps < 0:
+    print('Character is moving')
+
+print(bool(0))
+print(bool(1))
+print(bool("er"))
+print(bool(" "))
+print(bool(""))
+print(bool(-5))
+print(bool(None))
+print(bool(False))
+    
+my_silly_list = []
+print(bool(my_silly_list))
+
+my_silly_list = ['s','t','l', 'i', 'y']
+print(bool(my_silly_list))
+
+year = input('Year of birth: ')
+if not bool(year.rstrip()):
+	print('You need to enter a value for your year of birth')
+
+dir(1)
+dir('string')
+popcorn = 'I love popcorn'
+dir('I love popcorn')
+dir(popcorn)
+popcorn.lower()
+popcorn.upper()
+help(popcorn.upper)
+'string'.upper()
+dir(abs)
+
+eval('10*4')
+eval('popcorn.upper()')
+eval("'string'.upper()")
+eval('popcorn')
+
+your_calculation = input('Enter a calculation: ')
+
+print(eval(your_calculation))
+
+my_small_program = '''print("ham")
+print("sandwhich")'''
+exec(my_small_program)
+
+
+your_age = input('Enter your age: ')
+age = float(your_age)
+if age >13:
+    print('You\'re %s years too old.' % (age - 13))
+int(123.345)
+int('123')
+int(float('12.23'))
+
+    
+
+
 
 
