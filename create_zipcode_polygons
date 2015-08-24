@@ -1,3 +1,4 @@
+filestem = 'C:\Users\Thomas\Downloads\zt06_d00_ascii'
 def read_ascii_boundary(filestem):
     '''
     Reads polygon data from an ASCII boundary file.
