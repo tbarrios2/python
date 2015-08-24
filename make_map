@@ -1,0 +1,57 @@
+import csv
+from pylab import *
+
+# Read in ZIP code boundaries for California
+d = read_ascii_boundary('../data/zip5/zt06_d00')
+
+# Read in data for number of births by ZIP code in California
+f = csv.reader(open('../data/CA_2007_births_by_ZIP.txt', 'rb'))
+births = {}
+# Skip header line
+f.next()
+# Add data for each ZIP code
+for row in f:
+    zipcode, totalbirths = row
+    births[zipcode] = float(totalbirths)
+max_births = max(births.values())
+
+# Create figure and two axes: one to hold the map and one to hold
+# the colorbar
+figure(figsize=(5, 5), dpi=30)
+map_axis = axes([0.0, 0.0, 0.8, 0.9])
+cb_axis = axes([0.83, 0.1, 0.03, 0.6])
+
+# Define colormap to color the ZIP codes.
+# You can try changing this to cm.Blues or any other colormap
+# to get a different effect
+cmap = cm.PuRd
+
+# Create the map axis
+axes(map_axis)
+axis([-125, -114, 32, 42.5])
+gca().set_axis_off()
+
+# Loop over the ZIP codes in the boundary file
+for polygon_id in d:
+    polygon_data = array(d[polygon_id]['polygon'])
+    zipcode = d[polygon_id]['name']
+    num_births = births[zipcode] if zipcode in births else 0.
+    # Define the color for the ZIP code
+    fc = cmap(num_births / max_births)
+    # Draw the ZIP code
+    patch = Polygon(array(polygon_data), facecolor=fc,
+        edgecolor=(.3, .3, .3, 1), linewidth=.2)
+    gca().add_patch(patch)
+title('Births per ZIP Code in California (2007)')
+
+# Draw colorbar
+cb = mpl.colorbar.ColorbarBase(cb_axis, cmap=cmap,
+    norm = mpl.colors.Normalize(vmin=0, vmax=max_births))
+cb.set_label('Number of births')
+
+# Change all fonts to Arial
+for o in gcf().findobj(matplotlib.text.Text):
+    o.set_fontname('Arial')
+
+# Export figure to bitmap
+savefig('../images/ca_births.png')
