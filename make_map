@@ -26,7 +26,7 @@ max_births = max(births.values())
 
 # Create figure and two axes: one to hold the map and one to hold
 # the colorbar
-figure(figsize=(5, 5), dpi=1200)
+figure(figsize=(8, 8), dpi=1200)
 map_axis = axes([0.0, 0.0, 0.8, 0.9])
 cb_axis = axes([0.83, 0.1, 0.03, 0.6])
 
@@ -37,25 +37,26 @@ cmap = cm.PuRd
 
 # Create the map axis
 axes(map_axis)
-axis([-125, -114, 32, 42.5])
+axis([-119, -117.5, 33, 34.5])
 gca().set_axis_off()
 
 # Loop over the ZIP codes in the boundary file
 for polygon_id in d:
     polygon_data = array(d[polygon_id]['polygon'])
     zipcode = d[polygon_id]['name']
-    if int(zipcode[0:3]) == 903:
-        print(polygon_data)
-    if int(zipcode[0:3]) == 903:
-        num_births = births[zipcode] if zipcode in births else 0.
-        # Define the color for the ZIP code
+    num_births = births[zipcode] if zipcode in births else 9999.
+    # Define the color for the ZIP code
+    if num_births != 9999:
         fc = cmap(num_births / max_births)
-        # Draw the ZIP code
-        patch = Polygon(array(polygon_data), facecolor=fc,
-            edgecolor=(.3, .3, .3, 1), linewidth=.2)
-        gca().add_patch(patch)
+    else:
+        fc = (0, 0, 1, 1)
     
-title('Births per ZIP Code in California (2007)')
+    # Draw the ZIP code
+    patch = Polygon(array(polygon_data), facecolor=fc,
+        edgecolor=(.3, .3, .3, 1), linewidth=.2)
+    gca().add_patch(patch)
+    
+title('Births per ZIP Code in Southern California (2007)')
 
 # Draw colorbar
 cb = mpl.colorbar.ColorbarBase(cb_axis, cmap=cmap,
@@ -67,4 +68,4 @@ for o in gcf().findobj(matplotlib.text.Text):
     o.set_fontname('Arial')
 
 # Export figure to bitmap
-savefig('C:\\Users\\Thomas\\Downloads\\ca_births.png')
+savefig('C:\\Users\\Thomas\\Downloads\\soca_births.png')
