@@ -2,22 +2,24 @@ import csv
 from pylab import *
 
 # Read in ZIP code boundaries for California
-d = read_ascii_boundary('../data/zip5/zt06_d00')
+d = read_ascii_boundary('C:\\Users\\Thomas\\Downloads\\zt06_d00_ascii\\zt06_d00')
 
 # Read in data for number of births by ZIP code in California
-f = csv.reader(open('../data/CA_2007_births_by_ZIP.txt', 'rb'))
+f = csv.reader(open('C:\\Users\\Thomas\\Downloads\\CA_2007_births_by_ZIP.csv', 'r'))
 births = {}
 # Skip header line
-f.next()
+f.__next__()
 # Add data for each ZIP code
+from locale import *
+setlocale(LC_NUMERIC, '')
 for row in f:
     zipcode, totalbirths = row
-    births[zipcode] = float(totalbirths)
+    births[zipcode] = atof(totalbirths)
 max_births = max(births.values())
 
 # Create figure and two axes: one to hold the map and one to hold
 # the colorbar
-figure(figsize=(5, 5), dpi=30)
+figure(figsize=(5, 5), dpi=1200)
 map_axis = axes([0.0, 0.0, 0.8, 0.9])
 cb_axis = axes([0.83, 0.1, 0.03, 0.6])
 
@@ -54,4 +56,4 @@ for o in gcf().findobj(matplotlib.text.Text):
     o.set_fontname('Arial')
 
 # Export figure to bitmap
-savefig('../images/ca_births.png')
+savefig('C:\\Users\\Thomas\\Downloads\\ca_births.png')
