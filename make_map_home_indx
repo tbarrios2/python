@@ -1,0 +1,72 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Aug 25 14:28:52 2015
+
+@author: Thomas
+"""
+
+import csv
+from pylab import *
+
+# Read in ZIP code boundaries for California
+d = read_ascii_boundary('C:\\Users\\Thomas\\Downloads\\zt06_d00_ascii\\zt06_d00')
+
+# Read in data for number of births by ZIP code in California
+f = csv.reader(open('C:\\Users\\Thomas\\Dropbox\\Barrios_Real_Estate\\HPI_AT_3zip.csv', 'r'))
+prices = {}
+# Skip header line
+f.__next__()
+# Add data for each ZIP code
+from locale import *
+setlocale(LC_NUMERIC, '')
+for row in f:
+    zipcode3, homepriceidx = row
+    prices[zipcode3] = atof(homepriceidx)
+max_prices = max(prices.values())
+
+# Create figure and two axes: one to hold the map and one to hold
+# the colorbar
+figure(figsize=(8, 8), dpi=1200)
+map_axis = axes([0.0, 0.0, 0.8, 0.9])
+cb_axis = axes([0.83, 0.1, 0.03, 0.6])
+
+# Define colormap to color the ZIP codes.
+# You can try changing this to cm.Blues or any other colormap
+# to get a different effect
+cmap = cm.PuRd
+
+# Create the map axis
+axes(map_axis)
+axis([-122, -114.5, 32, 42.5])
+gca().set_axis_off()
+
+# Loop over the ZIP codes in the boundary file
+for polygon_id in d:
+    polygon_data = array(d[polygon_id]['polygon'])
+    zipcode = d[polygon_id]['name']
+    zipcode3 = zipcode[0:3]
+    num_prices = prices[zipcode3] if zipcode3 in prices else 9999.
+    # Define the color for the ZIP code
+    if num_prices != 9999:
+        fc = cmap(num_prices / max_prices)
+    else:
+        fc = (0, 0, 1, 1)
+    
+    # Draw the ZIP code
+    patch = Polygon(array(polygon_data), facecolor=fc,
+        edgecolor=(.3, .3, .3, 1), linewidth=.2)
+    gca().add_patch(patch)
+    
+title('Home Price Index per ZIP 3 in Southern California (1975-2015)')
+
+# Draw colorbar
+cb = mpl.colorbar.ColorbarBase(cb_axis, cmap=cmap,
+    norm = mpl.colors.Normalize(vmin=0, vmax=max_prices))
+cb.set_label('Home Price Index ')
+
+# Change all fonts to Arial
+for o in gcf().findobj(matplotlib.text.Text):
+    o.set_fontname('Arial')
+
+# Export figure to bitmap
+savefig('C:\\Users\\Thomas\\Downloads\\soca_home_price_levels_relative1975.png')
