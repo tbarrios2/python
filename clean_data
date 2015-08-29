@@ -1,0 +1,28 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Aug 28 17:23:00 2015
+
+@author: Thomas
+"""
+
+df = pd.read_csv('C:\\Users\\Thomas\\Dropbox\\Barrios_Real_Estate\\HPI_AT_3zip.csv')
+del df['Unnamed: 5']
+del df['Unnamed: 6']
+del df['Unnamed: 7']
+
+
+df[df.Year == 2015]
+df2015 = df[df.Year == 2015]
+
+
+
+cols = ['Three-Digit_ZIP_Code', 'Year', 'Quarter', 'Index_(NSA)', 'Index_Type']
+df2015.columns = cols
+
+df_native_2015 = df2015[df2015.Index_Type == 'Native 3-Digit ZIP index']
+
+del df_native_2015['Year']
+del df_native_2015['Quarter']
+del df_native_2015['Index_Type']
+df_native_2015
+df_native_2015.to_csv('C:\\Users\\Thomas\\Dropbox\\Barrios_Real_Estate\\HPI_3zip' + year + quarter +'.csv')
