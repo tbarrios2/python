@@ -1,0 +1,153 @@
+# Downloads/statistician_datatsets/statistian_datasets/
+getwd()
+#setwd("C:/Users/Thomas/Downloads/statistician_datasets/statistician_datasets")
+setwd("C:/Users/Thomas/Dropbox/truecar")
+
+#install.packages("ggplot2")
+library(ggplot2)
+#install.packages("dplyr")
+library(dplyr)
+#install.packages("glmnet", repos = "http://cran.us.r-project.org")
+library(glmnet)
+library(Matrix)
+
+ds_0 = read.csv(file = "hw_data_set_1_msdos.csv")
+
+ds_2 = read.csv(file = "hw_data_set_2_msdos.csv")
+
+ds_2$price <- NA
+
+ds_1 = rbind(ds_0, ds_2)
+
+
+qplot(price, data=ds_1, geom="histogram")
+
+
+
+# add a new variable price/basemsrp
+# price/transactionmsrp
+ds_1 = mutate(ds_1, ratio_price_basemsrp = price / base_msrp)
+ds_1 = mutate(ds_1, ratio_price_transmsrp = price / transaction_msrp)
+
+# create interaction variables
+ds_1 = mutate(ds_1, sqr_transaction_msrp = round(transaction_msrp/10) * round(transaction_msrp /10) )
+ds_1 = mutate(ds_1, i_dealercash_trans_msrp = round(dealercash/10) * round(transaction_msrp /10) )
+ds_1 = mutate(ds_1, i_base_trans_msrp = round(base_msrp/10) * round(transaction_msrp /10) )
+ds_1 = mutate(ds_1, cube_transaction_msrp = round(transaction_msrp/10) * round(sqr_transaction_msrp /10) )
+
+# make "make" dummies
+ds_1$make.f <- factor(ds_1$make) 
+is.factor(ds_1$make.f)
+
+# something is wrong with the year variable: max = 2025
+unique(ds_1$year)
+sum(with(ds_1, year > 2011))
+
+# remove outliers: year =  2012 and newer (10 obs)
+ds_1 = ds_1[ds_1$year < 2012, ] 
+
+ds_1$year.f <- factor(ds_1$year)
+
+# create zip dummies
+#ds_1$zip.f  <- factor(ds_1$zip)
+
+#ds_1$zip3 <- trunc(ds_1$zip/100)
+
+#ds_1$zip3.f  <- factor(ds_1$zip3)
+
+#create state dummies
+ds_1$state.f <- factor(ds_1$State)
+
+# create model dummies
+#ds_1$model.f <- factor(ds_1$model_id)
+
+# more dummies
+ds_1$drive_type.f <- factor(ds_1$drive_type)
+ds_1$door.f <- factor(ds_1$door)
+ds_1$transmission.f <- factor(ds_1$transmission)
+
+# engine: too many unique values
+
+ds_1$bodytype.f <- factor(ds_1$bodytype)
+
+
+# create a date variable for year 
+
+ds_1$makedate <- as.Date(sprintf('%d-01-01',ds_1$year), "%Y-%m-%d")
+ds_1$sales_date.d <- as.Date(ds_1$sales_date, "%d-%b-%y")
+
+ds_1$car_age = ds_1$sales_date.d - ds_1$makedate
+
+ds_1$car_age.n <- as.double(ds_1$car_age) 
+
+
+# retrieve hw data 2 
+ds_2c = ds_1[is.na(ds_1$price),]
+
+# retrieve hw data 1
+ds_0c = ds_1[!is.na(ds_1$price),]
+
+# create clean data (ie no outliers)
+ds_1c = ds_0c[ds_0c$ratio_price_transmsrp < 2 , ] 
+summary(ds_1c)
+
+
+
+qplot(price, data=ds_1c, geom="histogram")
+qplot(base_msrp, data=ds_1c, geom="histogram")
+qplot(ratio_price_basemsrp, data=ds_1c, geom="histogram")
+qplot(ratio_price_transmsrp, data=ds_1c, geom="histogram")
+
+
+
+# lasso time
+
+
+
+# sample 1/2 of the data 
+
+ds_1s = ds_1c[sample(nrow(ds_1c), nrow(ds_1c)/2), ]
+summary(ds_1s)
+ms = sparse.model.matrix( ~ transaction_msrp + base_msrp + customercash + dealercash + finance + lease  + destination + sqr_transaction_msrp + cube_transaction_msrp
+	+ i_dealercash_trans_msrp + i_base_trans_msrp + make.f + year.f + drive_type.f + door.f + transmission.f + bodytype.f  + sales_date + state.f
+	, data = ds_1s,
+	contrasts.arg=list(make.f=contrasts(ds_1c$make.f, contrasts=F),
+		year.f=contrasts(ds_1c$year.f, contrasts=F),
+		drive_type.f=contrasts(ds_1c$drive_type.f, contrasts=F),
+		door.f=contrasts(ds_1c$door.f, contrasts=F),
+ 		transmission.f=contrasts(ds_1c$transmission.f, contrasts=F),	
+		bodytype.f=contrasts(ds_1c$bodytype.f, contrasts=F),
+		sales_date=contrasts(ds_1c$sales_date, contrasts=F),
+		state.f=contrasts(ds_1c$state.f, contrasts=F)))
+
+y1s = select(ds_1s, price)
+y.m1s = data.matrix(y1s)
+
+
+fit1s = glmnet(ms, y.m1s)
+cvfit1s = cv.glmnet(ms, y.m1s)
+plot(fit1s)
+plot(cvfit1s)
+coef(cvfit1s, s = "lambda.min")
+
+
+
+m2 = sparse.model.matrix( ~ transaction_msrp + base_msrp + customercash + dealercash + finance + lease  + destination + sqr_transaction_msrp + cube_transaction_msrp
+	+ i_dealercash_trans_msrp + i_base_trans_msrp + make.f + year.f + drive_type.f + door.f + transmission.f + bodytype.f  + sales_date + state.f
+	, data = ds_2c,
+	contrasts.arg=list(make.f=contrasts(ds_1c$make.f, contrasts=F),
+		year.f=contrasts(ds_1c$year.f, contrasts=F),
+		drive_type.f=contrasts(ds_1c$drive_type.f, contrasts=F),
+		door.f=contrasts(ds_1c$door.f, contrasts=F),
+ 		transmission.f=contrasts(ds_1c$transmission.f, contrasts=F),	
+		bodytype.f=contrasts(ds_1c$bodytype.f, contrasts=F),
+		sales_date=contrasts(ds_1c$sales_date, contrasts=F),
+		state.f=contrasts(ds_1c$state.f, contrasts=F)))
+
+
+predict_m2 = predict(cvfit1s, newx = m2, type = "response", s = "lambda.min")
+predict(cvfit1s, newx = m2, type = "response", s = "lambda.min")
+ds_2$price = predict_m2
+
+write.table(mydata, "c:/mydata.txt", sep="\t")
+
