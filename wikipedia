@@ -1,0 +1,285 @@
+
+
+import pandas as pd
+import os
+import re
+
+csvFile = "D:\Dropbox\Dropbox\Indeed\wikipedia_traffic.csv"
+
+
+pwd = os.getcwd()
+os.chdir(os.path.dirname(csvFile))
+trainData = pd.read_csv(os.path.basename(csvFile))
+
+os.chdir(pwd)
+
+
+pd.unique(trainData.language)
+
+
+listoflanguage =  trainData.groupby('language').sum()
+sortedlistlanguage = listoflanguage.sort('requests', ascending =0)
+sortedlistlanguage[0:19]
+
+toplanguages = list(sortedlistlanguage[0:20].index.values)
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+import pandas as pd
+import os
+import re
+import pickle
+csvFile = "D:\Dropbox\Dropbox\Indeed\wikipedia_traffic.csv"
+
+toplanguages = ['en',
+ 'ja',
+ 'ru',
+ 'de',
+ 'fr',
+ 'es',
+ 'it',
+ 'pl',
+ 'pt',
+ 'zh',
+ 'nl',
+ 'tr',
+ 'sv',
+ 'ar',
+ 'ko',
+ 'uk',
+ 'cs',
+ 'id',
+ 'fi',
+ 'no']
+# Use only these languages for the remainder of the Assignment
+
+# median page size
+for i in toplanguages:
+	pwd = os.getcwd()
+	os.chdir(os.path.dirname(csvFile))
+	trainData = pd.read_csv(os.path.basename(csvFile))
+	trainData = trainData.drop('page_name', axis=1)
+	print(i)
+	trainData = trainData[trainData['language'] == i]
+	trainData.to_pickle('D:\Dropbox\Dropbox\Indeed\wiki_traf_nonames_%s.csv' % i)
+	del trainData
+
+
+for i in toplanguages:
+    csvfile = "D:\Dropbox\Dropbox\Indeed\wiki_traf_nonames_%s.csv" % i
+    load_file = open(csvfile, 'rb')
+    trainData = pickle.load(load_file)
+    trainData['bytes_per_request'] = trainData.bytes / trainData.requests
+    medianbylanguage = trainData.groupby('language').median()
+    print(i)
+    print(medianbylanguage)
+    del trainData
+    del load_file
+    del medianbylanguage
+   
+# korea has the highest median page size
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+import pandas as pd
+import os
+import re
+import pickle
+
+toplanguages = ['en',
+ 'ja',
+ 'ru',
+ 'de',
+ 'fr',
+ 'es',
+ 'it',
+ 'pl',
+ 'pt',
+ 'zh',
+ 'nl',
+ 'tr',
+ 'sv',
+ 'ar',
+ 'ko',
+ 'uk',
+ 'cs',
+ 'id',
+ 'fi',
+ 'no']
+
+for i in toplanguages:    
+    csvFile = "D:\Dropbox\Dropbox\Indeed\wikipedia_traffic.csv"
+    pwd = os.getcwd()
+    os.chdir(os.path.dirname(csvFile))
+    trainData = pd.read_csv(os.path.basename(csvFile))
+    trainData = trainData[trainData['language'] == i]
+    os.chdir(pwd)
+    trainData['page_name_lower'] =  trainData['page_name'].str.lower()
+    trainData['containsobama'] =  trainData['page_name_lower'].str.contains('obama')
+    trainData = trainData[trainData['containsobama'] == 1]
+    print(trainData.shape)
+    print(i)
+    del trainData
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+import pandas as pd
+import os
+import re
+import pickle
+
+csvFile = "D:\Dropbox\Dropbox\Indeed\wikipedia_traffic.csv"
+pwd = os.getcwd()
+os.chdir(os.path.dirname(csvFile))
+trainData = pd.read_csv(os.path.basename(csvFile))
+trainData = trainData[trainData['language'] == 'en']
+trainData.to_pickle('D:\Dropbox\Dropbox\Indeed\wiki_traf_en' )
+del trainData
+pwd = os.getcwd()
+os.chdir(os.path.dirname(csvFile))
+trainData = pd.read_csv(os.path.basename(csvFile))
+trainData = trainData[trainData['language'] == 'es']
+trainData.to_pickle('D:\Dropbox\Dropbox\Indeed\wiki_traf_es' )
+
+trainData.columns = ['language', 'page_name', 'es_requests', 'es_bytes']
+
+csvfile = "D:\Dropbox\Dropbox\Indeed\wiki_traf_en" 
+load_file = open(csvfile, 'rb')
+en_trainData = pickle.load(load_file)
+
+en_trainData = en_trainData.drop('language', axis=1)
+trainData = trainData.drop('language', axis=1)
+
+mergedData = pd.merge(trainData, en_trainData)
+
+mergedData['total_bytes'] = mergedData.es_bytes + mergedData.bytes 
+
+sortedmergedData =  mergedData.sort('total_bytes', ascending =0)
+#     Iron_Man_3 has most total_bytes
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+import re
+
+mergedData['num_words'] =  len(re.findall('_',mergedData['page_name']))
+mergedData['num_words'] =  mergedData['page_name'].str.count('_')
+mergedData['num_words'] = mergedData['num_words'] + 1
+
+pd.unique(mergedData.num_words)
+
+meanbynumwords = mergedData.groupby('num_words').mean()
+meanbynumwords.plot(kind='barh', rot=0)
+meanbynumwords['total_bytes'].plot(kind='barh', rot=0)
+meanbynumwords[['es_requests', 'requests']].plot(kind='barh', rot=0)
+
+
+import random
+import numpy
+from matplotlib import pyplot
+
+
+
+bins = numpy.linspace(0, 35, 36)
+
+pyplot.hist(mergedData['es_requests'], bins, alpha=0.5, label='es_requests')
+pyplot.hist(mergedData['requests'], bins, alpha=0.5, label='en_requests')
+pyplot.legend(loc='upper right')
+pyplot.show()
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+import pandas as pd
+import os
+import re
+import numpy as np
+import matplotlib.pyplot as plt
+
+csvFile = "D:\Dropbox\Dropbox\Indeed\wikipedia_traffic.csv"
+
+pwd = os.getcwd()
+os.chdir(os.path.dirname(csvFile))
+trainData = pd.read_csv(os.path.basename(csvFile))
+
+os.chdir(pwd)
+
+pd.unique(trainData.language)
+
+listoflanguage =  trainData.groupby('language').sum()
+
+sortedlistlanguage = listoflanguage.sort('requests', ascending =0)
+sortedlistlanguage[0:19]
+sortedlistlanguage['log_requests'] = np.log(sortedlistlanguage['requests']) 
+sortedlistlanguage['log_bytes'] = np.log(sortedlistlanguage['bytes'])
+
+
+plt.scatter(
+	sortedlistlanguage['requests'][0:20],
+	sortedlistlanguage['bytes'][0:20])
+plt.show()
+	
+
+plt.scatter(
+	sortedlistlanguage['log_requests'][0:20],
+	sortedlistlanguage['log_bytes'][0:20])
+plt.show()
+
+
+pop = pd.Series([340,
+130,
+170,
+78,
+76,
+400,
+64,
+40,
+170,
+850,
+28,
+63,
+9,
+420,
+77,
+30,
+11,
+43,
+5,
+5])
+
+colors = np.random.rand(20)
+
+labels = sortedlistlanguage.index.values[0:20]
+plt.subplots_adjust(bottom = 0.1)
+plt.scatter(
+    sortedlistlanguage['log_requests'][0:20], sortedlistlanguage['log_bytes'][0:20], marker = 'o', s = pop*3,
+    cmap = plt.get_cmap('Spectral'), c=colors, alpha=0.5)
+for label, x, y in zip(labels, sortedlistlanguage['log_requests'][0:20], sortedlistlanguage['log_bytes'][0:20]):
+    plt.annotate(
+        label, 
+        xy = (x, y), xytext = (-20, 20),
+        textcoords = 'offset points', ha = 'right', va = 'bottom',
+        bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.5),
+        arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0'))
+plt.ylabel('log avrg bytes')
+plt.xlabel('log avrg requests')
+plt.show()	
+
+
+
+
+
+
+
+
